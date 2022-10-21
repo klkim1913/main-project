@@ -31,7 +31,9 @@ jobs:
       run: chmod +x ./gradlew
     
     - name: Generate Keystore file from Github Secrets
-      run: echo $KEYSTORE | base64 -d > ./src/main/resources/keystore.p12
+      run: |
+        echo "$KEYSTORE" > ./src/main/resources/keystore.b64
+        base64 -d -i ./src/main/resources/keystore.b64 > ./src/main/resources/keystore.p12
       env:
         KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
     
