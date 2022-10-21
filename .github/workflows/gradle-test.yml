@@ -30,7 +30,10 @@ jobs:
     - name: Run chmod to make gradlew executable
       run: chmod +x ./gradlew
     
-    - run: echo $KEYSTORE_BASE64 | base64 -d > ./src/main/resources/keystore.p12
+    - name: Generate Keystore file from Github Secrets
+      run: echo $KEYSTORE | base64 -d > ./src/main/resources/keystore.p12
+      env:
+        KEYSTORE: ${{ secrets.KEYSTORE_BASE64 }}
     
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2.3.2
